@@ -57,6 +57,10 @@ return {
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
+      -- remove this after mason adds @vue/typescript-plugin
+      local result = vim.fn.systemlist 'npm ls -g --depth=0'
+      local location = string.format('%s/node_modules/@vue/typescript-plugin', result[1])
+
       local servers = {
         intelephense = {
           settings = {
@@ -67,6 +71,21 @@ return {
         },
 
         tailwindcss = {},
+
+        tsserver = {
+          filetypes = { 'vue', 'typescript', 'javascript' },
+          init_options = {
+            plugins = {
+              {
+                name = '@vue/typescript-plugin',
+                location = location,
+                languages = { 'vue' },
+              },
+            },
+          },
+        },
+
+        volar = {},
 
         lua_ls = {
           settings = {
@@ -116,19 +135,6 @@ return {
     },
     config = function()
       local flutter_tools = require 'flutter-tools'
-
-      -- flutter_tools.setup_project {
-      --   {
-      --     name = 'Dev',
-      --     flavor = 'dev',
-      --     dart_define = { ENV = 'dev' },
-      --   },
-      --   {
-      --     name = 'Prod',
-      --     flavor = 'prod',
-      --     dart_define = { ENV = 'prod' },
-      --   },
-      -- }
 
       flutter_tools.setup {
         fvm = true,
