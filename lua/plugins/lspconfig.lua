@@ -73,19 +73,21 @@ return {
         tailwindcss = {},
 
         tsserver = {
-          filetypes = { 'vue', 'typescript', 'javascript' },
+          filetypes = { 'vue', 'typescript', 'javascript', 'json' },
           init_options = {
             plugins = {
               {
                 name = '@vue/typescript-plugin',
                 location = location,
-                languages = { 'vue', 'javascript', 'typescript' },
+                languages = { 'vue', 'javascript', 'typescript', 'json' },
               },
             },
           },
         },
 
         volar = {},
+
+        docker_compose_language_service = {},
 
         lua_ls = {
           settings = {
@@ -146,10 +148,16 @@ return {
         debugger = {
           enabled = true,
           run_via_dap = true,
+          exception_breakpoints = {},
           register_configurations = function(_)
             require('dap').configurations.dart = {}
             require('dap.ext.vscode').load_launchjs()
           end,
+        },
+        dev_log = {
+          enabled = false,
+          notify_errors = false, -- if there is an error whilst running then notify the user
+          open_cmd = 'tabedit', -- command to use to open the log buffer
         },
       }
     end,

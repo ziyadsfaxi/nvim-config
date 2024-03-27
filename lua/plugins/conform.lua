@@ -30,6 +30,7 @@ return {
           -- is found.
           javascript = { { 'prettierd', 'prettier' } },
           vue = { { 'prettierd', 'prettier' } },
+          json = { { 'prettier', 'prettierd' } },
         },
       }
 
