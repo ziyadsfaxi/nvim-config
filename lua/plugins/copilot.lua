@@ -1,3 +1,7 @@
+do
+  return {}
+end
+
 return {
   {
     'github/copilot.vim',

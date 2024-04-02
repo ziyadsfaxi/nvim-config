@@ -1,6 +1,6 @@
 return {
   'nvim-lualine/lualine.nvim',
   options = {
-    theme = 'catppuccin',
+    theme = 'catppuccin-mocha',
   },
 }

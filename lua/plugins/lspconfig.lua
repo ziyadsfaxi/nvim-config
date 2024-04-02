@@ -57,9 +57,8 @@ return {
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
-      -- remove this after mason adds @vue/typescript-plugin
-      local result = vim.fn.systemlist 'npm ls -g --depth=0'
-      local location = string.format('%s/node_modules/@vue/typescript-plugin', result[1])
+      local npmLocation = vim.fn.systemlist 'npm ls -g --depth=0'
+      local vueTsPluginlocation = string.format('%s/node_modules/@vue/typescript-plugin', npmLocation[1])
 
       local servers = {
         intelephense = {
@@ -73,19 +72,21 @@ return {
         tailwindcss = {},
 
         tsserver = {
-          filetypes = { 'vue', 'typescript', 'javascript', 'json' },
+          filetypes = { 'vue', 'typescript', 'javascript' },
           init_options = {
             plugins = {
               {
                 name = '@vue/typescript-plugin',
-                location = location,
-                languages = { 'vue', 'javascript', 'typescript', 'json' },
+                location = vueTsPluginlocation,
+                languages = { 'vue' },
               },
             },
           },
         },
 
         volar = {},
+
+        jsonls = {},
 
         docker_compose_language_service = {},
 
@@ -141,6 +142,9 @@ return {
       flutter_tools.setup {
         fvm = true,
         lsp = {
+          color = {
+            enabled = true,
+          },
           settings = {
             lineLength = 120,
           },
@@ -158,6 +162,13 @@ return {
           enabled = false,
           notify_errors = false, -- if there is an error whilst running then notify the user
           open_cmd = 'tabedit', -- command to use to open the log buffer
+        },
+        decorations = {
+          statusline = {
+            device = true,
+            app_version = true,
+            project_config = true,
+          },
         },
       }
     end,
