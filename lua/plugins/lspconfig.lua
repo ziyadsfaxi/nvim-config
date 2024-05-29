@@ -12,6 +12,8 @@ return {
       { 'j-hui/fidget.nvim', opts = {} },
     },
     config = function()
+      require('mason').setup()
+
       vim.api.nvim_create_autocmd('LspAttach', {
         group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
         callback = function(event)
@@ -57,8 +59,8 @@ return {
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
-      local npmLocation = vim.fn.systemlist 'npm ls -g --depth=0'
-      local vueTsPluginlocation = string.format('%s/node_modules/@vue/typescript-plugin', npmLocation[1])
+      local mason_registry = require 'mason-registry'
+      local vue_language_server_path = mason_registry.get_package('vue-language-server'):get_install_path() .. '/node_modules/@vue/language-server'
 
       local servers = {
         intelephense = {
@@ -72,12 +74,12 @@ return {
         tailwindcss = {},
 
         tsserver = {
-          filetypes = { 'vue', 'typescript', 'javascript' },
+          filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
           init_options = {
             plugins = {
               {
                 name = '@vue/typescript-plugin',
-                location = vueTsPluginlocation,
+                location = vue_language_server_path,
                 languages = { 'vue' },
               },
             },
@@ -89,6 +91,8 @@ return {
         jsonls = {},
 
         docker_compose_language_service = {},
+
+        omnisharp = {},
 
         lua_ls = {
           settings = {
@@ -108,8 +112,6 @@ return {
           },
         },
       }
-
-      require('mason').setup()
 
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
@@ -131,7 +133,6 @@ return {
   },
   {
     'akinsho/flutter-tools.nvim',
-    lazy = false,
     dependencies = {
       'nvim-lua/plenary.nvim',
       -- 'stevearc/dressing.nvim', -- optional for vim.ui.select

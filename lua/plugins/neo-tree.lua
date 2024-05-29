@@ -12,7 +12,7 @@ return {
     enable_git_status = true,
   },
   config = function()
-    vim.keymap.set('n', '<leader>e', ':Neotree filesystem toggle left<CR>', {})
+    vim.keymap.set('n', '<leader>e', ':Neotree reveal toggle left<CR>', {})
     vim.keymap.set('n', '<leader>ge', ':Neotree git_status toggle left<CR>', {})
     vim.keymap.set('n', '<leader>bf', ':Neotree buffers toggle float<CR>', {})
   end,

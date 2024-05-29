@@ -8,18 +8,31 @@ return {
 
     'V13Axel/neotest-pest',
   },
+  keys = {
+    {
+      '<leader>tn',
+      function()
+        require('neotest').run.run()
+      end,
+      { desc = '[T]est [N]earest' },
+    },
+    {
+      '<leader>tf',
+      function()
+        require('neotest').run.run(vim.fn.expand '%')
+      end,
+      { desc = '[T]est [N]earest' },
+    },
+  },
   config = function()
+    local neoconf = require 'neoconf'
+
     require('neotest').setup {
       log_level = vim.log.levels.DEBUG,
       adapters = {
         require 'neotest-pest' {
-          sail_enabled = function()
-            return true
-          end,
-
-          results_path = function()
-            return 'storage/app/pest'
-          end,
+          sail_project_path = neoconf.get 'neotest-pest.sail_project_path',
+          results_path = neoconf.get 'neotest-pest.results_path',
         },
       },
     }
